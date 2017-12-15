@@ -31,11 +31,8 @@
 
 		<script src="/build/three.js"></script>
 		<script src="js/controls/OrbitControls.js"></script>
-
 		<script src="js/Detector.js"></script>
-
 		<script src="js/libs/dat.gui.min.js"></script>
-
 		<script src="js/postprocessing/EffectComposer.js"></script>
 		<script src="js/postprocessing/RenderPass.js"></script>
 		<script src="js/postprocessing/MaskPass.js"></script>
@@ -69,18 +66,14 @@
 
 				//
 
-				var geometry = new THREE.SphereGeometry( 18, 30, 30 );
+				var geometry1 = new THREE.SphereGeometry( 10, 30, 30 );
+				var geometry2 = new THREE.SphereGeometry( 18, 30, 30 );
 
 				var material1 = new THREE.MeshStandardMaterial( {
 					opacity: params.opacity,
 					transparent: true
 				} );
 
-				var material2 = new THREE.MeshStandardMaterial( {
-					opacity: params.opacity,
-					//premultipliedAlpha: true,
-					transparent: true
-				} );
 
 				var textureLoader = new THREE.TextureLoader();
 				textureLoader.load( "textures/2k_moon.jpg", function ( map ) {
@@ -89,40 +82,33 @@
 
 					material1.map = map;
 					material1.needsUpdate = true;
-					// material2.map = map;
-					// material2.needsUpdate = true;
 
 				} );
 
-				var textureLoader = new THREE.TextureLoader();
-				textureLoader.load( "textures/earth.png", function ( map ) {
+				var textureEarth = new THREE.TextureLoader().load( 'textures/earth.png' );
 
-					map.anisotropy = 8;
-
-					// material1.roughnessMap = map;
-					// material1.needsUpdate = true;
-					material2.roughnessMap = map;
-					material2.needsUpdate = true;
-
+				var material2 = new THREE.MeshStandardMaterial( {
+					map: textureEarth,
+					opacity: params.opacity,
+					transparent: true
 				} );
 
-
-
-				var mesh = new THREE.Mesh( geometry, material1 );
-				mesh.position.x = - 55.0;
+				var mesh = new THREE.Mesh( geometry1, material1 );
+				mesh.position.x = - 40.0;
 				scene.add( mesh );
 
-				var mesh = new THREE.Mesh( geometry, material2 );
+				var mesh = new THREE.Mesh( geometry2, material2 );
 				mesh.position.x = 25.0;
 				scene.add( mesh );
 
 				//
 
-				var geometry = new THREE.PlaneBufferGeometry( 800, 800 );
+				var geometry3 = new THREE.PlaneBufferGeometry( 400, 400 );
 				var material = new THREE.MeshStandardMaterial( { color: 0x333333 } );
-				var mesh = new THREE.Mesh( geometry, material );
+
+				var mesh = new THREE.Mesh( geometry3, material );
 				mesh.position.y = - 50;
-				mesh.rotation.x = - Math.PI * 0.5;
+				mesh.rotation.x = - Math.PI * 0.3;
 				scene.add( mesh );
 
 				// Lights
