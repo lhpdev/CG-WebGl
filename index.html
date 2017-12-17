@@ -3,7 +3,6 @@
 	<head>
 		<title>Trabalho Webgl CG - 2017</title>
 		<meta charset="utf-8">
-		<!-- <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"> -->
 		<style>
 			body {
 				background-color: #111;
@@ -17,108 +16,133 @@
 	</head>
 	<body>
 		<script src="/build/three.js"></script>
-		<script src="/js/orbit_controls.js"></script>
+		<!-- <script src="/js/orbit_controls.js"></script> -->
+		<script src="/js/TrackballControls.js"></script>
 		<script>
-			var scene, camera, renderer;
+			/////////////////////////////////////////
+			// Setup da Cena
+			/////////////////////////////////////////
+			var scene, camera, renderer, controls;
 
-			function init(){
-				// Criando a cena
-				var scene = new THREE.Scene();
+			// Criando a cena
+			scene = new THREE.Scene();
 
-				// Criando uma câmera perspectiva
-				var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 1000);
-				camera.position.set(0, 0, 35);
+			// Criando uma câmera perspectiva
+			var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 1000);
+			camera.position.set(0, 0, 35);
 
-				// Criando Renderer e setando seu tamanho para o mesmo tamanho da janela
-				renderer = new THREE.WebGLRenderer({antialias: true});
-				renderer.setSize(window.innerWidth, window.innerHeight);
+			// Criando Renderer e setando seu tamanho para o mesmo tamanho da janela
+			renderer = new THREE.WebGLRenderer({
+					alpha: true,
+					antialias: true
+			});
+			renderer.setPixelRatio(window.devicePixelRatio);
+			renderer.setSize(window.innerWidth, window.innerHeight);
 
-				// Adicionando controle de órbita
-				var orbit = new THREE.OrbitControls( camera, renderer.domElement)
-
-				// Adicionando o renderer canvas ao DOM
-				document.body.appendChild(renderer.domElement);
-
-				// Criando luz ambiente
-				var light = new THREE.AmbientLight(0x888888);
-				scene.add(light);
-
-				// Criando luz direcional para simular o Sol
-				var light = new THREE.DirectionalLight(0xfdfcf0, 1);
-				light.position.set(20,10,10);
-				scene.add(light);
-
-				// Criando geometria e material para os terra - textura e mapa de relevo
-				var earthGeometry = new THREE.SphereGeometry(10, 50, 50);
-				var earthMaterial = new THREE.MeshPhongMaterial({
-					map: new THREE.ImageUtils.loadTexture("textures/2k_earth_daymap.jpg"),
-					bumpMap: new THREE.ImageUtils.loadTexture("textures/8081_earthbump2k.jpg"),
-				  bumpScale: 0.55,
-				  color: 0xf1f1f1});
-				var earth = new THREE.Mesh(earthGeometry, earthMaterial);
-				scene.add(earth);
-
-				// Criando geometria e material para as nuvens
-				// Criação de uma esfera um pouco maior que a da terra para que as nuvens fiquem sobre a terra
-				var cloudGeometry = new THREE.SphereGeometry(10.3, 50, 50);
-				var cloudMaterial = new THREE.MeshPhongMaterial({
-					map: new THREE.ImageUtils.loadTexture("textures/cloud_combined_2048.jpg"),
-				  transparent: true, // Adiciona transparência à camada de nuvens para não encobrir a camada da terra
-					opacity: 0.1});
-				var clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
-				scene.add(clouds);
+			// Adicionando o renderer canvas ao DOM
+			document.body.appendChild(renderer.domElement);
 
 
-				// Adicionando campo de estrelas
+			/////////////////////////////////////////
+			// Controle da Câmera
+			/////////////////////////////////////////
 
-				// Para que haja a impressão de um campo de estrelas, cria-se uma esfera com um grande raio
-				// e adiciona-se uma textura dos dois lados dessa esfera, com shininess igual a 0 para que a fonte
-				// de luz não a influencie
-				var starGeometry = new THREE.SphereGeometry(1000, 50, 50);
-				var starMaterial = new THREE.MeshPhongMaterial({
-					map: new THREE.ImageUtils.loadTexture("textures/galaxy_starfield.png"),
-					side: THREE.DoubleSide,
-					shininess: 0
-				});
-				var starField = new THREE.Mesh(starGeometry, starMaterial);
-				scene.add(starField);
+			controls = new THREE.TrackballControls( camera );
+			controls.rotateSpeed = 5.0;
+			controls.zoomSpeed = 3.2;
+			controls.panSpeed = 0.8;
+			controls.noZoom = false;
+			controls.noPan = true;
+			controls.staticMoving = false;
+			controls.dynamicDampingFactor = 0.2;
 
-				// Criando e adicionando geometria e material da Lua
-				var moonGeometry = new THREE.SphereGeometry(2, 50, 50);
-				var moonMaterial = new THREE.MeshPhongMaterial({
-					map: new THREE.ImageUtils.loadTexture("textures/2k_moon.jpg"),
-					// bumpMap: new THREE.ImageUtils.loadTexture("textures/moonbump1k.jpg"),
-					// bumpScale: 0.15
-				});
-				var moon = new THREE.Mesh(moonGeometry, moonMaterial);
-				scene.add(moon);
+			/////////////////////////////////////////
+			// Luzes
+			/////////////////////////////////////////
 
-				// Para criar a órbita da lua em torno da terra, calculamos a órbita em coordenadas polares e
-				// e convertemos para coordenadas cartesianas para setar a posição do objeto
-				var r = 30;
-				var teta = 0;
-				var dTeta = 2 * Math.PI / 200; // Controla o período da Lua no incremento
+			// Criando luz ambiente
+			var light = new THREE.AmbientLight(0x888888);
+			scene.add(light);
 
-				// Implementando a função render
-				var render = function (){
-					// Adicionando rotação à terra no eixo Y
-					earth.rotation.y -= .005;
-					clouds.rotation.y -= .003;
+			// Criando luz direcional para simular o Sol
+			var light = new THREE.DirectionalLight(0xfdfcf0, 1);
+			light.position.set(20,10,10);
+			scene.add(light);
 
-					// Incrementa teta e atualiza o x e o z da Lua
-					teta += dTeta;
-					moon.position.x = r * Math.cos(teta);
-					moon.position.z = r * Math.sin(teta);
+			/////////////////////////////////////////
+			// Configuração dos Corpos
+			/////////////////////////////////////////
 
-					renderer.render(scene, camera);
-					requestAnimationFrame(render);
-				};
+			// Criando geometria e material para os terra - textura e mapa de relevo
+			var earthGeometry = new THREE.SphereGeometry(10, 50, 50);
+			var earthMaterial = new THREE.MeshPhongMaterial({
+				map: new THREE.ImageUtils.loadTexture("textures/2k_earth_daymap.jpg"),
+				bumpMap: new THREE.ImageUtils.loadTexture("textures/8081_earthbump2k.jpg"),
+				bumpScale: 0.55,
+				color: 0xf1f1f1});
+			var earth = new THREE.Mesh(earthGeometry, earthMaterial);
+			scene.add(earth);
 
-				render();
-			}
+			// Criando geometria e material para as nuvens
+			// Criação de uma esfera um pouco maior que a da terra para que as nuvens fiquem sobre a terra
+			var cloudGeometry = new THREE.SphereGeometry(10.3, 50, 50);
+			var cloudMaterial = new THREE.MeshPhongMaterial({
+				map: new THREE.ImageUtils.loadTexture("textures/cloud_combined_2048.jpg"),
+				transparent: true, // Adiciona transparência à camada de nuvens para não encobrir a camada da terra
+				opacity: 0.1});
+			var clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
+			scene.add(clouds);
+
+			// Adicionando campo de estrelas
+
+			// Para que haja a impressão de um campo de estrelas, cria-se uma esfera com um grande raio
+			// e adiciona-se uma textura dos dois lados dessa esfera, com shininess igual a 0 para que a fonte
+			// de luz não a influencie
+			var starGeometry = new THREE.SphereGeometry(1000, 50, 50);
+			var starMaterial = new THREE.MeshPhongMaterial({
+				map: new THREE.ImageUtils.loadTexture("textures/galaxy_starfield.png"),
+				side: THREE.DoubleSide,
+				shininess: 0
+			});
+			var starField = new THREE.Mesh(starGeometry, starMaterial);
+			scene.add(starField);
+
+			// Criando e adicionando geometria e material da Lua
+			var moonGeometry = new THREE.SphereGeometry(2, 50, 50);
+			var moonMaterial = new THREE.MeshPhongMaterial({
+				map: new THREE.ImageUtils.loadTexture("textures/2k_moon.jpg"),
+			});
+			var moon = new THREE.Mesh(moonGeometry, moonMaterial);
+			scene.add(moon);
+
+			/////////////////////////////////////////
+			// Loop de Renderização
+			/////////////////////////////////////////
+
+      // Para criar a órbita da lua em torno da terra, calculamos a órbita em coordenadas polares e
+      // e convertemos para coordenadas cartesianas para setar a posição do objeto
+
+      var r = 30;
+      var teta = 0;
+      var dTeta = 2 * Math.PI / 200; // Controla o período da Lua no incremento
+
+      var render = function(){
+        // Adicionando rotação à terra no eixo Y
+        earth.rotation.y -= .0009;
+        clouds.rotation.y -= .00005;
 
 
-			init();
+        // Incrementa teta e atualiza o x e o z da Lua
+        teta += dTeta;
+        moon.position.x = r * Math.cos(teta);
+        moon.position.z = r * Math.sin(teta);
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+				controls.update();
+      }
+			render();
+
 
 		</script>
 	</body>
