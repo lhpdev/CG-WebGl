@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<style>
 			body {
-				background-color: #111;
+				background-color: black;
 				margin: 0px;
 			}
 			canvas{
@@ -68,6 +68,7 @@
 			var light = new THREE.DirectionalLight(0xfdfcf0, 1);
 			light.position.set(20,10,10);
 			scene.add(light);
+
 
 			/////////////////////////////////////////
 			// Configuração dos Corpos
@@ -142,8 +143,6 @@
 				controls.update();
       }
 			render();
-
-
 		</script>
 	</body>
 </html>
