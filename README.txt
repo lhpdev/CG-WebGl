@@ -1,4 +1,4 @@
-TRABALHO 2 - COMPUTAÇÃO GRÁFICA E MULTIMÍDIA/2017
+﻿TRABALHO 2 - COMPUTAÇÃO GRÁFICA E MULTIMÍDIA/2017
 Alunos:
   - Lucas Hauptmann Pereira
   - Solon Yukio Shibata Meira
@@ -11,3 +11,5 @@ Caso a versão instalada do Python seja a 3.0 ou mais, executar comando python2.
 
 O arquivo index.html inclui o script em JavaScript escrito com auxilio da biblioteca Three.js. O controle de câmera da cena foi implementado com o auxilio
 da biblioteca para Three.js TrackballControls.js. Dessa forma, a manipulação da câmera pela cena foi otimizada e se tornou muito mais simples.
+
+Os controle da câmera pode ser feito clicando e arrastando o mouse de acordo com o desejo do usuário. O zoom in e out pode ser feito pelo scroll.
