@@ -29,7 +29,7 @@
 
 			// Criando uma câmera perspectiva
 			var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 1000);
-			camera.position.set(0, 0, 35);
+			camera.position.set(0, 0, 120);
 
 			// Criando Renderer e setando seu tamanho para o mesmo tamanho da janela
 			renderer = new THREE.WebGLRenderer({
@@ -123,14 +123,16 @@
       // Para criar a órbita da lua em torno da terra, calculamos a órbita em coordenadas polares e
       // e convertemos para coordenadas cartesianas para setar a posição do objeto
 
-      var r = 30;
+      var r = 100; // Raio reduzido
       var teta = 0;
-      var dTeta = 2 * Math.PI / 200; // Controla o período da Lua no incremento
+      var dTeta = 2 * Math.PI /3060;
+			// Controla o período da Lua no incremento
+			// Valor de 3060 calculado para que a velocidade de órbita da lua seja semelhante à real
 
       var render = function(){
         // Adicionando rotação à terra no eixo Y
         earth.rotation.y -= .0009;
-        clouds.rotation.y -= .00005;
+        clouds.rotation.y -= .0005;
 
 
         // Incrementa teta e atualiza o x e o z da Lua
