@@ -1,17 +1,14 @@
-﻿TRABALHO 2 - COMPUTAÇÃO GRÁFICA E MULTIMÍDIA/2017
-Alunos:
+﻿Assignment 2 - Computer Graphics and multimedia course /2017
+Group:
   - Lucas Hauptmann Pereira
   - Solon Yukio Shibata Meira
 
-SOBRE O PROGRAMA:
-	O arquivo index.html inclui o script em JavaScript escrito com auxilio da biblioteca Three.js. O controle de câmera da cena foi implementado com o auxilio
-	da biblioteca para Three.js TrackballControls.js. Dessa forma, a manipulação da câmera pela cena foi otimizada e se tornou muito mais simples.
+About:
+	It is a project created for the Computer Graphics course at UFSCAR in 2017.
+	
+	The index.html file includes the JS script written by usign the Three.js library. The camera controls TrackballControls.js. In that way, it is way easier to control it.
 
-SOBRE A EXECUÇÃO DO PROGRAMA:
-	Para melhor execução do projeto, hospedar os arquivos da pasta CG-T2 em um servidor local. Todos os testes realizados pelo grupo foram feitos utilizando
-	o comando python -m http.server, uma vez estando na CG-T2. Após isso, abrir no browser o endereço http://localhost:8000
-
-	Em caso de dúvidas, acessar https://docs.python.org/3/library/http.server.html
-
-SOBRE A UTILIZAÇÃO:
-	Os controle da câmera pode ser feito clicando e arrastando o mouse de acordo com o desejo do usuário. O zoom in e out pode ser feito pelo scroll.
+Running:
+	To run the project just copy all files into the 'CG-T2' folder in a localserver or just run the command 'python -m http.server if you have python installed. To see its results just open the browser and check the 'http://localhost:8000' url.
+	
+	More info: https://docs.python.org/3/library/http.server.html
